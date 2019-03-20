@@ -36,24 +36,46 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+/**
+ * Classe que representa um evento que deve conter os dados como nome, data de
+ * início e data de término.
+ * 
+ * @author joaoluiz
+ *
+ */
 public class Event implements Serializable {
 
+	/**
+	 * Identificador único do evento.
+	 */
 	@Id
 	@GeneratedValue
 	private Long id;
 
+	/**
+	 * Nomeou título do evento.
+	 */
 	@NotNull
 	@Size(min = 1, max = 200)
 	private String name;
 
+	/**
+	 * Data de início do evento.
+	 */
 	@NotNull
 	@Column(name = "start_date")
 	private Date startDate;
 
+	/**
+	 * Data de término do evento.
+	 */
 	@NotNull
 	@Column(name = "stop_date")
 	private Date stopDate;
 
+	/**
+	 * Lista de opções de inscrição no evento.
+	 */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "event")
 	private List<Ticket> tickets;
 

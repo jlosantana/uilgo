@@ -42,7 +42,7 @@ public class JaxRsActivator extends Application {
 		conf.setTitle("Uilgo API");
 		conf.setDescription("Uilgo Event Control");
 		conf.setVersion("1.0.0");
-		conf.setHost("localhost:8080");
+		conf.setHost("uilgo-uilgo.1d35.starter-us-east-1.openshiftapps.com");
 		conf.setBasePath("/events");
 		conf.setSchemes(new String[] { "http" });
 		conf.setResourcePackage("org.iesba.uilgo.rest");

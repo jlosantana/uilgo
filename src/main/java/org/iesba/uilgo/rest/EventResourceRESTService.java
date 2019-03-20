@@ -48,156 +48,189 @@ import org.iesba.uilgo.service.EventRegistration;
 import io.swagger.annotations.Api;
 
 /**
- * JAX-RS Example
+ * JAX-RS Service
  * <p/>
- * This class produces a RESTful service to read/write the contents of the events.
+ * Classe responsável por disponibilizar as operações realizadas por usuários no
+ * eventos cadastrados no sistema.
  */
 @Api
 @Path("/events")
 @RequestScoped
 public class EventResourceRESTService {
 
-    @Inject
-    private Logger log;
+	@Inject
+	private Logger log;
 
-    @Inject
-    private Validator validator;
+	@Inject
+	private Validator validator;
 
-    @Inject
-    private EventRepository repository;
+	@Inject
+	private EventRepository repository;
 
-    @Inject
-    EventRegistration registration;
+	@Inject
+	EventRegistration registration;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Event> listAllEvents() {
-        return repository.findAllOrderedByName();
-    }
-    
-    @GET
-    @Path("/tickets")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Ticket> listTickets() {
-        return repository.findTicketsOrderedByDescription();
-    }
-    
-    @GET
-    @Path("/tickets/{idEvent:[0-9][0-9]*}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Ticket> listTickets(@PathParam("idEvent") long idEvent) {
-        return repository.findTicketByEvent(idEvent);
-    }
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	/**
+	 * Lista todos os eventos cadastrados.
+	 * 
+	 * @return Lista de Eventos
+	 */
+	public List<Event> listAllEvents() {
+		return repository.findAllOrderedByName();
+	}
 
-    @GET
-    @Path("/{id:[0-9][0-9]*}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Event lookupEventById(@PathParam("id") long id) {
-        Event event = repository.findById(id);
-        if (event == null) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
-        return event;
-    }
+	@GET
+	@Path("/tickets")
+	@Produces(MediaType.APPLICATION_JSON)
+	/**
+	 * Lista todos os tickets de todos os eventos cadastrados.
+	 * 
+	 * @return Lista de tickets
+	 */
+	public List<Ticket> listTickets() {
+		return repository.findTicketsOrderedByDescription();
+	}
 
-    /**
-     * Creates a new event from the values provided. Performs validation, and will return a JAX-RS response with either 200 ok,
-     * or with a map of fields, and related errors.
-     */
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createEvent(Event event) {
+	@GET
+	@Path("/tickets/{idEvent:[0-9][0-9]*}")
+	@Produces(MediaType.APPLICATION_JSON)
+	/**
+	 * Lista tickets de um evento.
+	 * 
+	 * @param idEvent Identificador do evento.
+	 * @return Lista de tickets.
+	 */
+	public List<Ticket> listTickets(@PathParam("idEvent") long idEvent) {
+		return repository.findTicketByEvent(idEvent);
+	}
 
-        Response.ResponseBuilder builder = null;
+	@GET
+	@Path("/{id:[0-9][0-9]*}")
+	@Produces(MediaType.APPLICATION_JSON)
+	/**
+	 * Busca um evento pelo seu identificador.
+	 * 
+	 * @param id Identificador do evento.
+	 * @return Evento selecionado
+	 */
+	public Event lookupEventById(@PathParam("id") long id) {
+		Event event = repository.findById(id);
+		if (event == null) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
+		return event;
+	}
 
-        try {
-            // Validates event using bean validation
-            validateEvent(event);
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	/**
+	 * Cria um novo evento a partir dos valores fornecidos. Executa a validação e
+	 * retorna uma resposta JAX-RS com 200 ok ou com um mapa de campos e erros
+	 * relacionados.
+	 * 
+	 * @param event Evento para cadastro
+	 * @return Response Objeto contendo informações da operação.
+	 */
+	public Response createEvent(Event event) {
 
-            registration.register(event);
+		Response.ResponseBuilder builder = null;
 
-            // Create an "ok" response
-            builder = Response.ok();
-        } catch (ConstraintViolationException ce) {
-            // Handle bean validation issues
-            builder = createViolationResponse(ce.getConstraintViolations());
-        } catch (ValidationException e) {
-            // Handle the unique constrain violation
-            Map<String, String> responseObj = new HashMap<>();
-            responseObj.put("email", "Email taken");
-            builder = Response.status(Response.Status.CONFLICT).entity(responseObj);
-        } catch (Exception e) {
-            // Handle generic exceptions
-            Map<String, String> responseObj = new HashMap<>();
-            responseObj.put("error", e.getMessage());
-            builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
-        }
+		try {
+			// Validates event using bean validation
+			validateEvent(event);
 
-        return builder.build();
-    }
+			registration.register(event);
 
-    /**
-     * <p>
-     * Validates the given Event variable and throws validation exceptions based on the type of error. If the error is standard
-     * bean validation errors then it will throw a ConstraintValidationException with the set of the constraints violated.
-     * </p>
-     * <p>
-     * If the error is caused because an existing event with the same email is registered it throws a regular validation
-     * exception so that it can be interpreted separately.
-     * </p>
-     * 
-     * @param event Event to be validated
-     * @throws ConstraintViolationException If Bean Validation errors exist
-     * @throws ValidationException If event with the same email already exists
-     */
-    private void validateEvent(Event event) throws ConstraintViolationException, ValidationException {
-        // Create a bean validator and check for issues.
-        Set<ConstraintViolation<Event>> violations = validator.validate(event);
+			// Create an "ok" response
+			builder = Response.ok();
+		} catch (ConstraintViolationException ce) {
+			// Handle bean validation issues
+			builder = createViolationResponse(ce.getConstraintViolations());
+		} catch (ValidationException e) {
+			// Handle the unique constrain violation
+			Map<String, String> responseObj = new HashMap<>();
+			responseObj.put("email", "Email taken");
+			builder = Response.status(Response.Status.CONFLICT).entity(responseObj);
+		} catch (Exception e) {
+			// Handle generic exceptions
+			Map<String, String> responseObj = new HashMap<>();
+			responseObj.put("error", e.getMessage());
+			builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+		}
 
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(violations));
-        }
+		return builder.build();
+	}
 
-        // Check the uniqueness of the email address
-        if (nameAlreadyExists(event.getName())) {
-            throw new ValidationException("Unique Email Violation");
-        }
-    }
+	/**
+	 * <p>
+	 * Validates the given Event variable and throws validation exceptions based on
+	 * the type of error. If the error is standard bean validation errors then it
+	 * will throw a ConstraintValidationException with the set of the constraints
+	 * violated.
+	 * </p>
+	 * <p>
+	 * If the error is caused because an existing event with the same email is
+	 * registered it throws a regular validation exception so that it can be
+	 * interpreted separately.
+	 * </p>
+	 * 
+	 * @param event Event to be validated
+	 * @throws ConstraintViolationException If Bean Validation errors exist
+	 * @throws ValidationException          If event with the same email already
+	 *                                      exists
+	 */
+	private void validateEvent(Event event) throws ConstraintViolationException, ValidationException {
+		// Create a bean validator and check for issues.
+		Set<ConstraintViolation<Event>> violations = validator.validate(event);
 
-    /**
-     * Creates a JAX-RS "Bad Request" response including a map of all violation fields, and their message. This can then be used
-     * by clients to show violations.
-     * 
-     * @param violations A set of violations that needs to be reported
-     * @return JAX-RS response containing all violations
-     */
-    private Response.ResponseBuilder createViolationResponse(Set<ConstraintViolation<?>> violations) {
-        log.fine("Validation completed. violations found: " + violations.size());
+		if (!violations.isEmpty()) {
+			throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(violations));
+		}
 
-        Map<String, String> responseObj = new HashMap<>();
+		// Check the uniqueness of the email address
+		if (nameAlreadyExists(event.getName())) {
+			throw new ValidationException("Unique Email Violation");
+		}
+	}
 
-        for (ConstraintViolation<?> violation : violations) {
-            responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
-        }
+	/**
+	 * Creates a JAX-RS "Bad Request" response including a map of all violation
+	 * fields, and their message. This can then be used by clients to show
+	 * violations.
+	 * 
+	 * @param violations A set of violations that needs to be reported
+	 * @return JAX-RS response containing all violations
+	 */
+	private Response.ResponseBuilder createViolationResponse(Set<ConstraintViolation<?>> violations) {
+		log.fine("Validation completed. violations found: " + violations.size());
 
-        return Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
-    }
+		Map<String, String> responseObj = new HashMap<>();
 
-    /**
-     * Checks if a event with the same email address is already registered. This is the only way to easily capture the
-     * "@UniqueConstraint(columnNames = "email")" constraint from the Event class.
-     * 
-     * @param email The email to check
-     * @return True if the email already exists, and false otherwise
-     */
-    public boolean nameAlreadyExists(String name) {
-        Event event = null;
-        try {
-            event = repository.findByName(name);
-        } catch (NoResultException e) {
-            // ignore
-        }
-        return event != null;
-    }
+		for (ConstraintViolation<?> violation : violations) {
+			responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
+		}
+
+		return Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+	}
+
+	/**
+	 * Checks if a event with the same email address is already registered. This is
+	 * the only way to easily capture the "@UniqueConstraint(columnNames = "email")"
+	 * constraint from the Event class.
+	 * 
+	 * @param email The email to check
+	 * @return True if the email already exists, and false otherwise
+	 */
+	public boolean nameAlreadyExists(String name) {
+		Event event = null;
+		try {
+			event = repository.findByName(name);
+		} catch (NoResultException e) {
+			// ignore
+		}
+		return event != null;
+	}
 }

@@ -17,7 +17,7 @@
 package org.iesba.uilgo.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,29 +30,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 @SuppressWarnings("serial")
 @Entity
 @XmlRootElement
-public class Subscription implements Serializable {
+public class Order implements Serializable {
 
 	@Id
 	@GeneratedValue
 	private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "member_id")
-	private Member member;
-
-	@ManyToOne
-	@JoinColumn(name = "ticket_id")
-	private Ticket ticket;
-
-	@ManyToOne
-	@JoinColumn(name = "order_id")
-	private Order order;
-
 	@NotNull
-	private Date date;
+	private BigDecimal value;
+
+	@ManyToOne
+	@JoinColumn(name = "event_id")
+	private Event event;
 
 	@NotNull
 	private Integer status;
+
+	@ManyToOne
+	@JoinColumn(name = "member_id")
+	private Member member;
 
 	public Long getId() {
 		return id;
@@ -62,36 +58,20 @@ public class Subscription implements Serializable {
 		this.id = id;
 	}
 
-	public Member getMember() {
-		return member;
+	public BigDecimal getValue() {
+		return value;
 	}
 
-	public void setMember(Member member) {
-		this.member = member;
+	public void setValue(BigDecimal value) {
+		this.value = value;
 	}
 
-	public Ticket getTicket() {
-		return ticket;
+	public Event getEvent() {
+		return event;
 	}
 
-	public void setTicket(Ticket ticket) {
-		this.ticket = ticket;
-	}
-
-	public Order getOrder() {
-		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
+	public void setEvent(Event event) {
+		this.event = event;
 	}
 
 	public Integer getStatus() {
@@ -100,6 +80,14 @@ public class Subscription implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
 	}
 
 }
