@@ -18,14 +18,11 @@ package org.iesba.uilgo.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -73,12 +70,6 @@ public class Event implements Serializable {
 	@Column(name = "stop_date")
 	private Date stopDate;
 
-	/**
-	 * Lista de opções de inscrição no evento.
-	 */
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "event")
-	private List<Ticket> tickets;
-
 	public Long getId() {
 		return id;
 	}
@@ -109,14 +100,6 @@ public class Event implements Serializable {
 
 	public void setStopDate(Date stopDate) {
 		this.stopDate = stopDate;
-	}
-
-	public List<Ticket> getTickets() {
-		return tickets;
-	}
-
-	public void setTickets(List<Ticket> tickets) {
-		this.tickets = tickets;
 	}
 
 }

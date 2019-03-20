@@ -17,16 +17,13 @@
 package org.iesba.uilgo.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Digits;
@@ -64,9 +61,6 @@ public class Member implements Serializable {
 	@Column(name = "phone_number")
 	private String phoneNumber;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
-	private List<Subscription> subscriptions;
-
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -101,14 +95,6 @@ public class Member implements Serializable {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	public List<Subscription> getSubscriptions() {
-		return subscriptions;
-	}
-
-	public void setSubscriptions(List<Subscription> subscriptions) {
-		this.subscriptions = subscriptions;
 	}
 
 	public User getUser() {
