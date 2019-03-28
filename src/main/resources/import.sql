@@ -45,3 +45,5 @@ insert into Ticket (id, count_number, price, description, event_id) values (9, 5
 insert into Ticket (id, count_number, price, description, event_id) values (10, 4, 180.0, 'Acomodacao em apartamento', 5);
 
 insert into Subscription (id, member_id, ticket_id, date, status) values (1, 1, 1, DATE '2019-03-10', 0);
+
+
