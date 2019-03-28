@@ -17,15 +17,15 @@
 
 -- You can use this file to load seed data into the database using SQL statements
 insert into Member (id, name, email, phone_number) values (1, 'Joao Santana', 'jao.santna@gmail.com', '2125551212');
-insert into Member (id, name, email, phone_number) values (2, 'Jose Silva', 'jose@gmail.com', '2125551212');
-insert into Member (id, name, email, phone_number) values (3, 'Luiz Cardoso', 'luiz@gmail.com', '2125551212');
-insert into Member (id, name, email, phone_number) values (4, 'Maria Goncalvez', 'maria@gmail.com', '2125551212');
-insert into Member (id, name, email, phone_number) values (5, 'Carla Souza', 'carla@gmail.com', '2125551212');
-insert into Member (id, name, email, phone_number) values (6, 'Joana Teles', 'joana@gmail.com', '2125551212');
-insert into Member (id, name, email, phone_number) values (7, 'Cristina Teles', 'cirstina@gmail.com', '2125551212');
-insert into Member (id, name, email, phone_number) values (8, 'Arnaldo Filho', 'arnaldo@gmail.com', '2125551212');
-insert into Member (id, name, email, phone_number) values (9, 'Ana Julia', 'ana@gmail.com', '2125551212');
-insert into Member (id, name, email, phone_number) values (10, 'Roberto Carlos', 'roberto@gmail.com', '2125551212');
+insert into Member (id, name, email, phone_number) values (2, 'Jose Silva', 'jose@gmail.com', '11');
+insert into Member (id, name, email, phone_number) values (3, 'Luiz Cardoso', 'luiz@gmail.com', '22');
+insert into Member (id, name, email, phone_number) values (4, 'Maria Goncalvez', 'maria@gmail.com', '33');
+insert into Member (id, name, email, phone_number) values (5, 'Carla Souza', 'carla@gmail.com', '44');
+insert into Member (id, name, email, phone_number) values (6, 'Joana Teles', 'joana@gmail.com', '55');
+insert into Member (id, name, email, phone_number) values (7, 'Cristina Teles', 'cirstina@gmail.com', '66');
+insert into Member (id, name, email, phone_number) values (8, 'Arnaldo Filho', 'arnaldo@gmail.com', '77');
+insert into Member (id, name, email, phone_number) values (9, 'Ana Julia', 'ana@gmail.com', '88');
+insert into Member (id, name, email, phone_number) values (10, 'Roberto Carlos', 'roberto@gmail.com', '99');
 
 insert into Event (id, name, start_date, stop_date) values (1, 'Retiro de Solteiros 2019', DATE '2019-07-15', DATE '2019-07-17');
 insert into Event (id, name, start_date, stop_date) values (2, 'Retiro de Casados 2019', DATE '2019-09-01', DATE '2019-09-02');
