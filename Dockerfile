@@ -1,2 +1,4 @@
-FROM jlosantana/uilgo
-ADD ../target/uilgo.war deployments/
+
+FROM jboss/wildfly
+
+ADD target/uilgo.war /opt/jboss/wildfly/standalone/deployments/
