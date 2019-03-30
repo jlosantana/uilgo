@@ -37,13 +37,14 @@ import io.swagger.jaxrs.listing.SwaggerSerializers;
  */
 @ApplicationPath("/rest")
 public class JaxRsActivator extends Application {
+
 	public JaxRsActivator() {
 		BeanConfig conf = new BeanConfig();
 		conf.setTitle("Uilgo API");
 		conf.setDescription("Uilgo Event Control");
 		conf.setVersion("1.0.0");
-		conf.setHost("uilgo-uilgo.1d35.starter-us-east-1.openshiftapps.com");
-		conf.setBasePath("/events");
+		conf.setHost("localhost:8080");
+		conf.setBasePath("/rest");
 		conf.setSchemes(new String[] { "http" });
 		conf.setResourcePackage("org.iesba.uilgo.rest");
 		conf.setScan(true);
@@ -58,6 +59,9 @@ public class JaxRsActivator extends Application {
 		// swagger classes...
 		resources.add(ApiListingResource.class);
 		resources.add(SwaggerSerializers.class);
+		resources.add(CORSResponseFilter.class);
+		
 		return resources;
 	}
+
 }
